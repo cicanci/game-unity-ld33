@@ -1,0 +1,9 @@
+Builds/
+LudumDare33/Library/
+LudumDare33/Temp/
+
+*.csproj
+*.unityproj
+*.sln
+*.pidb
+*.userprefs
