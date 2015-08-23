@@ -31,7 +31,7 @@ public class Boat : Character
 	
 	void Update ()
     {
-        if (Mathf.Abs(gameObject.transform.localPosition.x) > 0.1f)
+        if (Mathf.Abs(gameObject.transform.localPosition.x) > 1)
         {
             if (gameObject.transform.localPosition.x > 0)
             {
@@ -43,7 +43,7 @@ public class Boat : Character
             }
         }
 
-        if (Mathf.Abs(gameObject.transform.localPosition.y) > 0.1f)
+        if (Mathf.Abs(gameObject.transform.localPosition.y) > 1)
         {
             if (gameObject.transform.localPosition.y > 0)
             {

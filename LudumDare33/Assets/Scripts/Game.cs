@@ -30,7 +30,7 @@ public class Game : MonoBehaviour
     {
         HandleInput();
 
-        //SpawnBoat();
+        SpawnBoat();
     }
 
     private void HandleInput()
@@ -85,8 +85,28 @@ public class Game : MonoBehaviour
 
         if (spawnCount >= spawnDelay)
         {
+            Vector3 position = Vector3.zero;
+
+            switch (Random.Range(0, 4))
+            {
+                case 0:
+                    position = new Vector3(Random.Range(-10, 10), 7, 0);
+                    break;
+                case 1:
+                    position = new Vector3(Random.Range(-10, 10), -7, 0);
+                    break;
+                case 2:
+                    position = new Vector3(10, Random.Range(-7, 7), 0);
+                    break;
+                case 3:
+                    position = new Vector3(-10, Random.Range(-7, 7), 0);
+                    break;
+                default:
+                    break;
+            }
+
             GameObject boat = boatSpawner.SpawnObject();
-            boat.transform.localPosition = new Vector3(Random.Range(-10, 10), 7, 0);
+            boat.transform.localPosition = position;
             spawnCount = 0;
         }
     }
