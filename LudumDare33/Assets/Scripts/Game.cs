@@ -11,6 +11,7 @@ public class Game : MonoBehaviour
     public Text currentScoreText;
     public Text highScoreText;
     public GameObject gameOverPanel;
+    public AudioSource music;
 
     private Command buttonDown;
     private Command buttonLeft;
@@ -50,15 +51,6 @@ public class Game : MonoBehaviour
 
     private void HandleInput()
     {
-        //if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
-        //{
-        //    // Get movement of the finger since last frame
-        //    Vector2 touchDeltaPosition = Input.GetTouch(0).deltaPosition;
-
-        //    // Move object across XY plane
-        //    transform.Translate(-touchDeltaPosition.x * speed, -touchDeltaPosition.y * speed, 0);
-        //}
-
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (Mathf.Abs(ray.origin.x - monster.transform.localPosition.x) > 0.1f)
@@ -176,6 +168,15 @@ public class Game : MonoBehaviour
             {
                 PlayerPrefs.SetInt("HighScore", currentScore);
             }
+
+            music.Stop();
+            PlaySound("GameOver");
         }
+    }
+
+    public void PlaySound(string pFileName)
+    {
+        AudioClip audioClip = Resources.Load<AudioClip>(pFileName);
+        GetComponent<AudioSource>().PlayOneShot(audioClip);
     }
 }

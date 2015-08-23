@@ -21,9 +21,15 @@ public partial class Character : MonoBehaviour
 
     public void Attack()
     {
+        Game.instance.PlaySound("Attack1");
+        Game.instance.PlaySound("Attack2");
+
         if (other != null)
         {
+            Game.instance.PlaySound("Damage");
+            Game.instance.PlaySound("Sink");
             Game.instance.AddScore(other.gameObject.GetComponent<Character>().score);
+            
             Destroy(other.gameObject);
         }
     }
