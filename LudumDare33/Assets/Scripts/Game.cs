@@ -1,10 +1,16 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class Game : MonoBehaviour
 {
+    public static Game instance;
+
     public GameObject monster;
     public GameObject boatPrefab;
     public float spawnDelay;
+
+    public Text currentScoreText;
+    public Text highScoreText;
 
     private Command buttonDown;
     private Command buttonLeft;
@@ -14,9 +20,12 @@ public class Game : MonoBehaviour
     private Spawner boatSpawner;
     private float spawnCount;
     private int currentScore;
+    private bool gameOver;
 
     void Start()
     {
+        instance = this;
+
         buttonDown = new MoveDownCommand();
         buttonLeft = new MoveLeftCommand();
         buttonRight = new MoveRightCommand();
@@ -24,6 +33,12 @@ public class Game : MonoBehaviour
         buttonAttack = new AttackCommand();
 
         boatSpawner = new Spawner(boatPrefab);
+        spawnCount = 0;
+        currentScore = 0;
+        gameOver = false;
+
+        AddScore(0);
+        SetHighScore();
     }
 
     void Update()
@@ -108,6 +123,49 @@ public class Game : MonoBehaviour
             GameObject boat = boatSpawner.SpawnObject();
             boat.transform.localPosition = position;
             spawnCount = 0;
+        }
+    }
+
+    private void SetHighScore()
+    {
+        highScoreText.text = "High Score: " + PlayerPrefs.GetInt("HighScore");
+    }
+
+    public void AddScore(int points)
+    {
+        currentScore += points;
+        if (currentScoreText != null)
+        {
+            currentScoreText.text = currentScore.ToString();
+        }
+    }
+
+    private void PauseGame()
+    {
+        if (Time.timeScale != 0)
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
+
+        Debug.Log(Time.timeScale);
+    }
+
+    public void GameOver()
+    {
+        if (!gameOver)
+        {
+            gameOver = true;
+
+            PauseGame();
+
+            if (currentScore > PlayerPrefs.GetInt("HighScore"))
+            {
+                PlayerPrefs.SetInt("HighScore", currentScore);
+            }
         }
     }
 }

@@ -31,6 +31,8 @@ public class Boat : Character
 	
 	void Update ()
     {
+        bool moved = false;
+
         if (Mathf.Abs(gameObject.transform.localPosition.x) > 1)
         {
             if (gameObject.transform.localPosition.x > 0)
@@ -41,6 +43,8 @@ public class Boat : Character
             {
                 MoveRight();
             }
+
+            moved = true;
         }
 
         if (Mathf.Abs(gameObject.transform.localPosition.y) > 1)
@@ -53,13 +57,22 @@ public class Boat : Character
             {
                 MoveUp();
             }
+
+            moved = true;
         }
 
-        Vector3 moveDirection = gameObject.transform.position - Vector3.zero;
-        if (moveDirection != Vector3.zero)
+        if (moved)
         {
-            float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            Vector3 moveDirection = gameObject.transform.position - Vector3.zero;
+            if (moveDirection != Vector3.zero)
+            {
+                float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            }
+        }
+        else
+        {
+            Game.instance.GameOver();
         }
     }
 }

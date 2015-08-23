@@ -4,6 +4,7 @@ using System.Collections;
 public partial class Character : MonoBehaviour
 {
     public float speed;
+    public int score;
 
     private Collider2D other;
 
@@ -28,6 +29,7 @@ public partial class Character : MonoBehaviour
     {
         if (other != null)
         {
+            Game.instance.AddScore(other.gameObject.GetComponent<Character>().score);
             Destroy(other.gameObject);
         }
     }
