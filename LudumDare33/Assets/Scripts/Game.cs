@@ -138,6 +138,15 @@ public class Game : MonoBehaviour
         {
             currentScoreText.text = currentScore.ToString();
         }
+
+        // This makes the game more intersting
+        spawnDelay -= Time.deltaTime;
+        monster.GetComponent<Character>().speed -= Time.deltaTime;
+
+        if (spawnDelay < 0)
+        {
+            spawnDelay = 0;
+        }
     }
 
     private void PauseGame()
