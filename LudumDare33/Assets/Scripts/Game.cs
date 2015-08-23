@@ -1,18 +1,39 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Game : MonoBehaviour
 {
     public GameObject monster;
-    public GameObject blueBoat;
-    public float speed = 10;
+    public GameObject boatPrefab;
+    public float spawnDelay;
+
+    private Command buttonDown;
+    private Command buttonLeft;
+    private Command buttonRight;
+    private Command buttonUp;
+    private Command buttonAttack;
+    private Spawner boatSpawner;
+    private float spawnCount;
+    private int currentScore;
 
     void Start()
     {
+        buttonDown = new MoveDownCommand();
+        buttonLeft = new MoveLeftCommand();
+        buttonRight = new MoveRightCommand();
+        buttonUp = new MoveUpCommand();
+        buttonAttack = new AttackCommand();
 
+        boatSpawner = new Spawner(boatPrefab);
     }
 
     void Update()
+    {
+        HandleInput();
+
+        //SpawnBoat();
+    }
+
+    private void HandleInput()
     {
         //if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
         //{
@@ -29,11 +50,11 @@ public class Game : MonoBehaviour
         {
             if (ray.origin.x > monster.transform.localPosition.x)
             {
-                monster.transform.localPosition = new Vector3(monster.transform.localPosition.x + (Time.deltaTime * speed), monster.transform.localPosition.y, monster.transform.localPosition.z);
+                buttonRight.Execute(monster);
             }
             else if (ray.origin.x < monster.transform.localPosition.x)
             {
-                monster.transform.localPosition = new Vector3(monster.transform.localPosition.x - (Time.deltaTime * speed), monster.transform.localPosition.y, monster.transform.localPosition.z);
+                buttonLeft.Execute(monster);
             }
         }
 
@@ -41,56 +62,32 @@ public class Game : MonoBehaviour
         {
             if (ray.origin.y > monster.transform.localPosition.y)
             {
-                monster.transform.localPosition = new Vector3(monster.transform.localPosition.x, monster.transform.localPosition.y + (Time.deltaTime * speed), monster.transform.localPosition.z);
+                buttonUp.Execute(monster);
             }
             else if (ray.origin.y < monster.transform.localPosition.y)
             {
-                monster.transform.localPosition = new Vector3(monster.transform.localPosition.x, monster.transform.localPosition.y - (Time.deltaTime * speed), monster.transform.localPosition.z);
+                buttonDown.Execute(monster);
             }
         }
 
         if (Input.GetMouseButtonDown(0))
         {
-            if (monster.GetComponent<Renderer>().bounds.Intersects(blueBoat.GetComponent<Renderer>().bounds))
-            {
-                Debug.Log("ATTACK!");
-                Destroy(blueBoat);
-            }
-            else
-            {
-                Debug.Log("NOPE!");
-            }
+            buttonAttack.Execute(monster);
         }
     }
 
-    void LateUpdate()
+    private void SpawnBoat()
     {
-        float left = Camera.main.ViewportToWorldPoint(Vector3.zero).x;
-        float right = Camera.main.ViewportToWorldPoint(Vector3.one).x;
-        float top = Camera.main.ViewportToWorldPoint(Vector3.zero).y;
-        float bottom = Camera.main.ViewportToWorldPoint(Vector3.one).y;
-
-        float x = monster.transform.position.x;
-        float y = monster.transform.position.y;
-
-        if (monster.transform.position.x <= left + monster.GetComponent<Renderer>().bounds.extents.x)
+        if (spawnCount < spawnDelay)
         {
-            x = left + monster.GetComponent<Renderer>().bounds.extents.x;
-        }
-        else if (monster.transform.position.x >= right - monster.GetComponent<Renderer>().bounds.extents.x)
-        {
-            x = right - monster.GetComponent<Renderer>().bounds.extents.x;
+            spawnCount += Time.deltaTime;
         }
 
-        if (monster.transform.position.y <= top + monster.GetComponent<Renderer>().bounds.extents.y)
+        if (spawnCount >= spawnDelay)
         {
-            y = top + monster.GetComponent<Renderer>().bounds.extents.y;
+            GameObject boat = boatSpawner.SpawnObject();
+            boat.transform.localPosition = new Vector3(Random.Range(-10, 10), 7, 0);
+            spawnCount = 0;
         }
-        else if (monster.transform.position.y >= bottom - monster.GetComponent<Renderer>().bounds.extents.y)
-        {
-            y = bottom - monster.GetComponent<Renderer>().bounds.extents.y;
-        }
-
-        monster.transform.position = new Vector3(x, y, monster.transform.position.z);
     }
 }
