@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Sea : MonoBehaviour
 {
@@ -32,10 +31,5 @@ public class Sea : MonoBehaviour
                 }
             }
         }
-    }
-
-    void Update()
-    {
-
     }
 }

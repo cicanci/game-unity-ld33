@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public partial class Character : MonoBehaviour
 {
@@ -10,18 +9,13 @@ public partial class Character : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("ENTER: " + other.tag);
+        //Debug.Log("ENTER: " + other.tag);
         this.other = other;
     }
 
-    //void OnTriggerStay2D(Collider2D other)
-    //{
-    //    Debug.Log("STAY: " + other.tag);
-    //}
-
     void OnTriggerExit2D(Collider2D other)
     {
-        Debug.Log("EXIT: " + other.tag);
+        //Debug.Log("EXIT: " + other.tag);
         this.other = null;
     }
 

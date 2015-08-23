@@ -8,9 +8,9 @@ public class Game : MonoBehaviour
     public GameObject monster;
     public GameObject boatPrefab;
     public float spawnDelay;
-
     public Text currentScoreText;
     public Text highScoreText;
+    public GameObject gameOverPanel;
 
     private Command buttonDown;
     private Command buttonLeft;
@@ -170,6 +170,7 @@ public class Game : MonoBehaviour
             gameOver = true;
 
             PauseGame();
+            gameOverPanel.SetActive(true);
 
             if (currentScore > PlayerPrefs.GetInt("HighScore"))
             {
