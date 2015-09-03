@@ -1,2 +1,3 @@
-# game-unity-ld33
-Game developed during the Ludum Dare #33
+Game developed for the Ludum Dare #33 - You are the Monster
+
+More info: http://ludumdare.com/compo/ludum-dare-33/?action=preview&uid=52021
